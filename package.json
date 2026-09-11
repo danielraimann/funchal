@@ -1,0 +1,11 @@
+{
+  "name": "meu-credito-portal",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Camada visual local para o Portal Funchal, usando a sessão e os comandos originais.",
+  "scripts": {
+    "check": "node --check extension/content.js && node --check scripts/package.mjs",
+    "package": "node scripts/package.mjs"
+  }
+}

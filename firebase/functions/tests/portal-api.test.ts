@@ -7,6 +7,7 @@ function api() {
   const uploads: any[] = [], locks: { owner: string; mode: string }[] = [];
   const { handlePortalRequest } = loadSource<typeof import("../src/portal-api.ts")>("portal-api.ts", {
     "./lib/portal-core": { PortalError },
+    "./lib/checklist-profile": {},
     "./lib/session-store": {
       readSession: async () => null, clearSession: async () => {},
       lockedSession: async (owner: string, mode: string, work: (state: unknown, active: () => Promise<void>) => Promise<unknown>) => {

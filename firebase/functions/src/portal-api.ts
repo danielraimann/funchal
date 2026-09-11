@@ -1,3 +1,4 @@
+import { processChecklist } from "./lib/checklist-profile";
 
 import { PortalError } from "./lib/portal-core";
 import { clearSession, lockedSession, readSession } from "./lib/session-store";
@@ -36,7 +37,7 @@ async function POST(request:Request,owner:string,action:string){try{
   if(action==="verify"){const code=field(body.code,6);if(!/^\d{6}$/.test(code))throw new PortalError("Digite os seis números do código.",400);return json(await lockedSession(owner,"verify",session=>verify(session,code)));}
   if(action==="detail")return json(await lockedSession(owner,"read",session=>detailView(session,field(body.proposalId))));
   if(action==="document-options")return json(await lockedSession(owner,"read",session=>documentWorkspace(session,field(body.proposalId),body.groupId?field(body.groupId,100):"")));
-  if(action==="document-checklist")return json(await lockedSession(owner,"read",session=>documentChecklist(session,field(body.proposalId),body.groupId?field(body.groupId,100):"")));
+  if(action==="document-checklist")return json(await lockedSession(owner,"read",async session=>processChecklist(owner,field(body.proposalId),await documentChecklist(session,field(body.proposalId),body.groupId?field(body.groupId,100):""),body.answer)));
   if(action==="document-notes")return json(await lockedSession(owner,"write",session=>documentNotes(session,field(body.proposalId))));
   if(action==="disconnect"){await clearSession(owner);return json({state:"disconnected"});}
   return json({message:"Endereço não encontrado."},404);

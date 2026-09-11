@@ -18,6 +18,7 @@ export type DocumentChecklist = {
   groups:DocumentChoice[];
   groupId:string;
   rows:DocumentChecklistRow[];
+  questions?:{key:string;title:string;instructions:string;complement:string;answer:"yes"|"no"|"unknown"}[];
   explanation:string;
 };
 export type DocumentWorkspace = { uploadAllowed:boolean; groups:DocumentChoice[]; types:DocumentChoice[]; groupId:string; maxFileBytes:number; checklist:{state:"unavailable"; explanation:string}; };

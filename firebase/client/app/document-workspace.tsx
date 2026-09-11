@@ -15,6 +15,8 @@ export default function DocumentWorkspace({proposalId,proposalNumber,detail,busy
   const [groupId,setGroupId]=useState(""),[typeId,setTypeId]=useState(""),[description,setDescription]=useState(""),[file,setFile]=useState<File|null>(null);
   const [search,setSearch]=useState(""),[review,setReview]=useState(false),[result,setResult]=useState<UploadResult|null>(null),[sending,setSending]=useState(false),[notes,setNotes]=useState<DocumentNotes|null>(null);
   const [checklist,setChecklist]=useState<DocumentChecklist|null>(null),[checklistLoading,setChecklistLoading]=useState(false),[checklistError,setChecklistError]=useState("");
+  const [editingProfile,setEditingProfile]=useState(false);
+  const [questionOffset,setQuestionOffset]=useState(0);
   const [readingNotes,setReadingNotes]=useState(false),[downloadingId,setDownloadingId]=useState("");
   const alive=useRef(true),fileInput=useRef<HTMLInputElement>(null),requestSequence=useRef(0),attempted=useRef(false),portalOperation=useRef(false);
   const view=useRef({options,notes,checklist,result,groupId,typeId,description,selectedFile:file?{name:file.name,bytes:file.size}:null});
@@ -37,10 +39,17 @@ export default function DocumentWorkspace({proposalId,proposalNumber,detail,busy
   function chooseFile(next:File|null){setResult(null);setLocalError("");attempted.current=false;if(next&&next.size>15*1024*1024){setLocalError("Escolha um arquivo de até 15 MB.");if(fileInput.current)fileInput.current.value="";setFile(null);return;}setFile(next);if(next&&!description)setDescription(next.name.replace(/\.[^.]+$/,"").slice(0,250));}
   async function loadChecklist(group=""){
     if(!beginPortalOperation())return;
-    setChecklistLoading(true);setChecklistError("");
+    setChecklistLoading(true);setChecklistError("");setQuestionOffset(0);
     try{const data=await portalApi<DocumentChecklist>("document-checklist",{proposalId,groupId:group});if(alive.current)setChecklist(data);}
     catch(error){if(alive.current){setChecklistError((error as Error).message);onError(error);}}
     finally{if(alive.current)setChecklistLoading(false);finishPortalOperation();}
+  }
+  async function answerQuestion(key:string,answer:"yes"|"no"|"unknown"){
+    if(!checklist||!beginPortalOperation())return;
+    setChecklistError("");
+    try{const data=await portalApi<DocumentChecklist>("document-checklist",{proposalId,groupId:checklist.groupId,answer:{key,answer}});if(alive.current){setChecklist(data);if(answer==="unknown")setQuestionOffset(current=>current+1);}}
+    catch(error){if(alive.current){setChecklistError((error as Error).message);onError(error);}}
+    finally{finishPortalOperation();}
   }
   async function refreshDocuments(){
     if(!beginPortalOperation())return;
@@ -91,6 +100,8 @@ export default function DocumentWorkspace({proposalId,proposalNumber,detail,busy
   const typeLabel=options?.types.find(item=>item.id===typeId)?.label||"",groupLabel=options?.groups.find(item=>item.id===groupId)?.label||"";
   const existingType=!!typeLabel&&!!detail?.documents.some(doc=>doc.type.trim().toLocaleLowerCase("pt-BR")===typeLabel.trim().toLocaleLowerCase("pt-BR"));
   const ready=!!file&&!!typeId&&!!groupId&&options?.groupId===groupId&&options.types.some(item=>item.id===typeId)&&!!description.trim()&&!busy&&!loading&&!attempted.current&&!existingType;
+  const unanswered=checklist?.questions?.filter(q=>q.answer==="unknown")||[];
+  const currentQuestion=unanswered.length?[unanswered[questionOffset%unanswered.length]]:[];
   const checklistCounts={missing:checklist?.rows.filter(row=>row.status==="sem anexo").length||0,attached:checklist?.rows.filter(row=>row.status==="anexado").length||0,unknown:checklist?.rows.filter(row=>row.status===null).length||0};
   return <div className="document-workspace">
     <section className="panel requirement-panel" aria-labelledby="requirements-title" aria-busy={checklistLoading}>
@@ -98,7 +109,7 @@ export default function DocumentWorkspace({proposalId,proposalNumber,detail,busy
       <div className="requirement-body">
         <p className="eyebrow">CHECKLIST DA FUNCHAL</p>
         <h2 id="requirements-title">Confira a documentação do processo</h2>
-        <p>Consulte os kits e veja quais categorias ainda estão sem anexo. As instruções da Funchal indicam quando cada documento se aplica.</p>
+        <p>Responda às condições do processo para visualizar somente os documentos pertinentes e identificar o que ainda precisa anexar.</p>
         <div className="requirement-actions">
           <Button variant="outline" className="checklist-load-button" disabled={busy||loading} onClick={()=>loadChecklist(checklist?.groupId||"")}>{checklistLoading?<LoaderCircle size={18} className="spin"/>:<ClipboardList size={18}/>}<span>{checklist?"Atualizar checklist":"Consultar documentos necessários"}</span></Button>
           <Button variant="outline" disabled={busy||loading} onClick={readNotes}>{readingNotes?<LoaderCircle size={17} className="spin"/>:<Search size={17}/>}Consultar registros da Funchal</Button>
@@ -109,13 +120,19 @@ export default function DocumentWorkspace({proposalId,proposalNumber,detail,busy
           <p className="checklist-explanation">{checklist.explanation}</p>
           {checklist.state==="available"&&<>
             <div className="checklist-kit"><Choice label="Kit de documentos" id="checklist-kit" value={checklist.groupId} items={checklist.groups} disabled={busy||loading} placeholder="Selecione o kit" onChange={value=>loadChecklist(value)}/></div>
+            {checklist.questions&&<div className="process-questionnaire">
+              <div className="section-heading"><div><h3>O que se aplica à sua proposta?</h3><p>Respostas salvas por proposta. Considere todos os participantes envolvidos, conforme o kit selecionado.</p></div><Button variant="outline" disabled={busy} onClick={()=>setEditingProfile(!editingProfile)}>{editingProfile?"Concluir revisão":"Revisar respostas"}</Button></div>
+              <p>{checklist.questions.filter(q=>q.answer==="unknown").length} condições a confirmar · {checklist.questions.filter(q=>q.answer==="no").length} categorias não aplicáveis ocultas</p>
+              {checklist.questions.some(q=>q.answer==="unknown")&&<p role="status">O checklist ainda está incompleto. Condições não confirmadas não entram nas pendências. Se não souber responder, consulte o responsável pelo processo.</p>}
+              {(editingProfile?checklist.questions:currentQuestion).map(q=><fieldset key={q.key} disabled={busy} className="profile-question"><legend>{q.title}</legend><p className="profile-guidance">{q.instructions||"A Funchal não informou as condições. Confirme com o responsável pelo processo se esta categoria é exigida para o seu caso."}</p>{q.complement&&<p>{q.complement}</p>}<p><strong>Essa exigência se aplica a algum participante ou à operação desta proposta?</strong></p><div className="profile-answers">{([{value:"yes",label:"Sim, aplica-se"},{value:"no",label:"Não se aplica"},{value:"unknown",label:"Ainda não sei"}] as const).map(option=><Button key={option.value} variant={q.answer===option.value?"default":"outline"} aria-pressed={q.answer===option.value} onClick={()=>answerQuestion(q.key,option.value)}>{option.label}</Button>)}</div></fieldset>)}
+            </div>}
             {checklist.rows.length>0?<>
               <div className="checklist-summary" aria-label="Resumo das categorias deste kit">
                 <span className="checklist-total missing"><strong>{checklistCounts.missing}</strong> sem anexo</span>
                 <span className="checklist-total attached"><strong>{checklistCounts.attached}</strong> com anexo</span>
                 {checklistCounts.unknown>0&&<span className="checklist-total unknown"><strong>{checklistCounts.unknown}</strong> sem informação</span>}
               </div>
-              <p className="checklist-summary-note">Contagem de categorias deste kit. Confira as condições de cada uma antes de enviar.</p>
+              <p className="checklist-summary-note">Somente categorias confirmadas como pertinentes a este kit e proposta. Revise as respostas se as condições mudarem.</p>
               <ol className="checklist-list">
                 {checklist.rows.map(row=>{
                   const statusClass=row.status==="anexado"?"attached":row.status==="sem anexo"?"missing":"unknown";
@@ -127,7 +144,7 @@ export default function DocumentWorkspace({proposalId,proposalNumber,detail,busy
                   </li>;
                 })}
               </ol>
-            </>:<p className="empty-note">Nenhuma categoria foi retornada para este kit. Isso não confirma que a documentação esteja completa.</p>}
+            </>:<p className="empty-note">Nenhum documento confirmado como pertinente neste kit. Confira o questionário antes de concluir que não há documentos pendentes.</p>}
           </>}
         </div>}
       </div>

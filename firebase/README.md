@@ -2,13 +2,13 @@
 
 Interface React para acompanhar o financiamento, consultar o checklist e enviar arquivos classificados ao portal Funchal.
 
-O cliente usa Firebase Authentication. Todas as chamadas à função `funchalApi` verificam o token Google e a conta autorizada configurada no servidor. Senha e código Funchal são encaminhados apenas durante o login. A sessão é cifrada em um banco Firestore separado; arquivos seguem para a Funchal e não são guardados no Firebase.
+O cliente usa Firebase Authentication. Todas as chamadas à função `funchalApi` verificam o token da conta autenticada por e-mail e senha, a confirmação do e-mail e a conta autorizada configurada no servidor. Senha e código Funchal são encaminhados apenas durante o login. A sessão é cifrada em um banco Firestore separado; arquivos seguem para a Funchal e não são guardados no Firebase.
 
 ## Desenvolvimento e publicação
 
 Use Node 22. Execute `npm ci` e `npm run build` nas pastas `client` e `functions`. Os testes do servidor são executados com `npm test` dentro de `functions`.
 
-O projeto Firebase precisa de um Web App, um site Hosting separado, login Google habilitado e banco nomeado `funchal`. Associe o target Hosting `funchal` ao novo site em `.firebaserc`. Configure `FUNCHAL_OWNER_EMAIL`, `FUNCHAL_APP_ORIGIN` e `FUNCHAL_DATABASE_ID` no ambiente da função. Armazene uma chave aleatória de 32 bytes em base64 no segredo `FUNCHAL_SESSION_KEY` do Secret Manager.
+O projeto Firebase precisa de um Web App, um site Hosting separado, login por e-mail e senha habilitado e banco nomeado `funchal`. Associe o target Hosting `funchal` ao novo site em `.firebaserc`. Configure `FUNCHAL_OWNER_EMAIL`, `FUNCHAL_APP_ORIGIN` e `FUNCHAL_DATABASE_ID` no ambiente da função. Armazene uma chave aleatória de 32 bytes em base64 no segredo `FUNCHAL_SESSION_KEY` do Secret Manager.
 
 Na pasta `firebase`, publique somente os recursos deste app:
 

@@ -2,7 +2,7 @@
 
 **[Acessar pelo GitHub](https://danielraimann.github.io/funchal/)** · **[Abrir o portal Firebase](https://funchal-raimann.web.app)**
 
-O novo portal funciona no Chrome do celular, sem extensão. A página pública do GitHub encaminha para o ambiente privado no Firebase. Entre com a conta Google autorizada e depois conecte sua conta Funchal com usuário, senha e código de autenticação.
+O novo portal funciona no Chrome do celular, sem extensão. A página pública do GitHub encaminha para o ambiente privado no Firebase. Entre com e-mail e senha da conta autorizada e depois conecte sua conta Funchal com usuário, senha e código de autenticação.
 
 A aplicação permite acompanhar a proposta, consultar anexos, baixar documentos e revisar arquivo, grupo, classificação e descrição antes do envio. O checklist consulta as categorias, instruções, condições e quantidades de anexos retornadas pela Funchal. Uma categoria sem anexo não é automaticamente obrigatória; um arquivo anexado não significa aprovação do banco.
 

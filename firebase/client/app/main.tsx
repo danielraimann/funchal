@@ -93,7 +93,7 @@ function App(){
       <p className="auth-help">Depois da confirmação, apenas contas autorizadas podem acessar as informações do financiamento.</p>
     </>:<>
       <h1>{mode==="signup"?<>Seu primeiro<br/>acesso.</>:mode==="reset"?<>Recupere<br/>seu acesso.</>:<>Mais perto<br/>da sua casa.</>}</h1>
-      <p>{mode==="signup"?"Cadastre seu e-mail autorizado e escolha uma senha exclusiva para este acompanhamento.":mode==="reset"?"Informe seu e-mail para receber as instruções de recuperação da senha deste acompanhamento.":"Entre com seu e-mail e senha para acompanhar o financiamento."}</p>
+      <p>{mode==="signup"?"Cadastre seu e-mail autorizado e escolha uma senha para o seu acesso.":mode==="reset"?"Informe seu e-mail para recuperar a senha do seu cadastro. A nova senha também valerá nos aplicativos que compartilham esse cadastro.":"Entre com seu e-mail e senha para acompanhar o financiamento."}</p>
       {mode!=="reset"&&<div className="auth-tabs" aria-label="Opções de acesso"><button type="button" aria-pressed={mode==="signin"} disabled={busy} onClick={()=>switchMode("signin")}>Entrar</button><button type="button" aria-pressed={mode==="signup"} disabled={busy} onClick={()=>switchMode("signup")}>Primeiro acesso</button></div>}
       {error&&<p className="auth-feedback error" role="alert">{error}</p>}
       {notice&&<p className="auth-feedback success" role="status">{notice}</p>}
@@ -104,9 +104,10 @@ function App(){
         <Button className="connect-button" type="submit" disabled={busy}>{busy?<><LoaderCircle className="spin" size={19}/>Aguarde…</>:<>{mode==="signup"?"Criar minha conta":mode==="reset"?"Enviar recuperação":"Entrar"}<ArrowRight size={18}/></>}</Button>
       </form>
       <div className="auth-form-links">{mode==="signin"?<button type="button" className="auth-text-button" disabled={busy} onClick={()=>switchMode("reset")}>Esqueci minha senha</button>:mode==="reset"?<button type="button" className="auth-text-button" disabled={busy} onClick={()=>switchMode("signin")}>Voltar para entrar</button>:null}</div>
-      {mode!=="reset"&&<div className="auth-access"><LockKeyhole size={22}/><div><strong>Duas etapas para acompanhar</strong><ol><li>Entre com seu e-mail autorizado e a senha criada aqui.</li><li>Depois, conecte seu acesso Funchal e confirme o código recebido.</li></ol></div></div>}
+      {mode!=="reset"&&<div className="auth-access"><LockKeyhole size={22}/><div><strong>Duas etapas para acompanhar</strong><ol><li>Entre com seu e-mail autorizado e a senha do seu cadastro.</li><li>Depois, conecte seu acesso Funchal e confirme o código recebido.</li></ol></div></div>}
     </>}
     <small>Crédito imobiliário Bradesco · Dados consultados na Funchal</small>
   </section></main>;
 }
 createRoot(document.getElementById("root")!).render(<App/>);
+

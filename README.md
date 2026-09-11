@@ -4,9 +4,11 @@
 
 **[Abrir o acompanhamento privado](https://funchal.daniel-raimann.chatgpt.site)**
 
-A versão web funciona por endereço, sem instalar extensão. O acesso é restrito à conta ChatGPT autorizada; depois, conecte sua conta Funchal e valide o código recebido. A primeira conexão real pela versão hospedada ainda precisa ser validada com o proprietário.
+A versão web funciona por endereço, sem instalar extensão. O acesso é restrito à conta ChatGPT autorizada; depois, conecte sua conta Funchal e valide o código recebido. A conexão real, a validação do código e a consulta da proposta já foram verificadas.
 
-A versão web utiliza um serviço privado para processar login e código sem gravá-los e manter uma sessão temporária criptografada. Ela permite consultar propostas, etapas e documentos. O envio de documentos abre o portal original.
+A versão web utiliza um serviço privado para processar login e código sem gravá-los e manter uma sessão temporária criptografada. Ela permite consultar propostas, etapas e documentos, escolher um arquivo e classificá-lo com os grupos e tipos oficiais antes de anexar, dentro da própria página. O fluxo de envio foi verificado com respostas sintéticas; nenhum arquivo de teste foi enviado a uma proposta real.
+
+O checklist automático de documentos faltantes e a reclassificação de anexos existentes ainda não estão disponíveis. A página informa esses limites. Envios para classificações já ocupadas são bloqueados enquanto a substituição no serviço de origem não estiver validada.
 
 ## Extensão para computador
 

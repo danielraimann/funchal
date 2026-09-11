@@ -1,0 +1,12 @@
+{
+  "name": "funchal-api",
+  "private": true,
+  "main": "lib/index.js",
+  "engines": { "node": "22" },
+  "scripts": {
+    "build": "tsc --noEmit && esbuild src/index.ts --bundle --platform=node --target=node22 --format=cjs --packages=external --outfile=lib/index.js",
+    "test": "node --experimental-transform-types --test tests/*.test.ts"
+  },
+  "dependencies": { "firebase-admin": "^13.5.0", "firebase-functions": "^6.6.0" },
+  "devDependencies": { "@types/node": "^22.19.19", "esbuild": "^0.25.12", "typescript": "5.9.3" }
+}

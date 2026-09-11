@@ -1,0 +1,9 @@
+{
+  "functions": [{"source":"functions","codebase":"funchal","runtime":"nodejs22","predeploy":["npm --prefix \"$RESOURCE_DIR\" run build"],"ignore":["node_modules",".git","*.log","tests"]}],
+  "hosting": {
+    "target":"funchal","public":"client/dist","ignore":["firebase.json","**/.*","**/node_modules/**"],
+    "rewrites":[{"source":"/api/portal/**","function":{"functionId":"funchalApi","region":"southamerica-east1"}},{"source":"**","destination":"/index.html"}],
+    "headers":[{"source":"**","headers":[{"key":"X-Content-Type-Options","value":"nosniff"},{"key":"Referrer-Policy","value":"no-referrer"},{"key":"X-Frame-Options","value":"DENY"}]},{"source":"/index.html","headers":[{"key":"Cache-Control","value":"no-store"}]}]
+  },
+  "firestore":[{"database":"funchal","location":"southamerica-east1","rules":"firestore.rules"}]
+}

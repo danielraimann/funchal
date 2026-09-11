@@ -1,14 +1,14 @@
 # Funchal · Meu crédito
 
-## Chrome no celular
+**[Acessar pelo GitHub](https://danielraimann.github.io/funchal/)** · **[Abrir o portal Firebase](https://funchal-raimann.web.app)**
 
-**[Abrir o acompanhamento privado](https://funchal.daniel-raimann.chatgpt.site)**
+O novo portal funciona no Chrome do celular, sem extensão. A página pública do GitHub encaminha para o ambiente privado no Firebase. Entre com a conta Google autorizada e depois conecte sua conta Funchal com usuário, senha e código de autenticação.
 
-A versão web funciona por endereço, sem instalar extensão. O acesso é restrito à conta ChatGPT autorizada; depois, conecte sua conta Funchal e valide o código recebido. A conexão real, a validação do código e a consulta da proposta já foram verificadas.
+A aplicação permite acompanhar a proposta, consultar anexos, baixar documentos e revisar arquivo, grupo, classificação e descrição antes do envio. O checklist consulta as categorias, instruções, condições e quantidades de anexos retornadas pela Funchal. Uma categoria sem anexo não é automaticamente obrigatória; um arquivo anexado não significa aprovação do banco.
 
-A versão web utiliza um serviço privado para processar login e código sem gravá-los e manter uma sessão temporária criptografada. Ela permite consultar propostas, etapas e documentos, escolher um arquivo e classificá-lo com os grupos e tipos oficiais antes de anexar, dentro da própria página. O fluxo de envio foi verificado com respostas sintéticas; nenhum arquivo de teste foi enviado a uma proposta real.
+O código da nova aplicação está em [`firebase/`](firebase/). O servidor protege as sessões em um banco Firestore separado. Senhas, códigos de autenticação e arquivos não são armazenados nesse banco. O GitHub contém apenas código e documentação.
 
-O checklist automático de documentos faltantes e a reclassificação de anexos existentes ainda não estão disponíveis. A página informa esses limites. Envios para classificações já ocupadas são bloqueados enquanto a substituição no serviço de origem não estiver validada.
+A substituição e a reclassificação de anexos existentes ainda dependem da validação do comportamento do portal original. Envios com resultado incerto não são repetidos automaticamente. O código de upload tem testes locais; nenhum documento de teste foi enviado à proposta real.
 
 ## Extensão para computador
 

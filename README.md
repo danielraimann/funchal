@@ -1,5 +1,15 @@
 # Funchal · Meu crédito
 
+## Chrome no celular
+
+**[Abrir o acompanhamento privado](https://funchal.daniel-raimann.chatgpt.site)**
+
+A versão web funciona por endereço, sem instalar extensão. O acesso é restrito à conta ChatGPT autorizada; depois, conecte sua conta Funchal e valide o código recebido. A primeira conexão real pela versão hospedada ainda precisa ser validada com o proprietário.
+
+A versão web utiliza um serviço privado para processar login e código sem gravá-los e manter uma sessão temporária criptografada. Ela permite consultar propostas, etapas e documentos. O envio de documentos abre o portal original.
+
+## Extensão para computador
+
 Uma camada visual para a página `Default.aspx` do Portal Funchal. Os dados são lidos da página autenticada e as consultas e aberturas de documentos acionam os controles originais. Não é um aplicativo oficial do Bradesco ou da Funchal.
 
 **[Baixar a extensão](https://github.com/danielraimann/funchal/releases/latest/download/meu-credito-extensao.zip)** · **[Baixar o userscript](https://github.com/danielraimann/funchal/releases/latest/download/funchal.user.js)** · **[Abrir o portal](https://formalizabra.creditoimobiliario.funchalnegocios.com.br/)**
@@ -33,13 +43,13 @@ Acesse o portal normalmente e conclua o login e o código por e-mail. A visualiz
 
 Para atualizar a extensão, substitua os arquivos na mesma pasta e use o botão **Recarregar** na página de extensões. O pacote não instala atualizações automáticas. Para remover o visual, use **Remover** na página de extensões.
 
-## Celular
+## Diferença entre as versões
 
-Um layout responsivo não instala uma extensão no navegador do celular. O uso direto depende de um navegador e gerenciador de userscripts compatíveis, que devem ser verificados para Android ou iPhone. Se estiver controlando o computador remotamente, instale a extensão no navegador do computador. Um endereço independente para celular ainda precisa de uma integração de autenticação própria; este projeto não cria esse serviço.
+Os pacotes desta release são a extensão e o userscript para execução dentro do portal original. Para o Chrome no celular, use o endereço privado da versão web acima. A extensão continua sendo uma opção separada para computador.
 
-## Privacidade e limites
+## Privacidade e limites da extensão
 
-Não há servidor novo, armazenamento local de informações da conta, telemetria, coleta de senha/token, cópia de cookies ou chamadas a serviços externos. Somente o portal mantém a sessão. Nenhum dado de conta está incluído nos arquivos distribuídos.
+Na extensão distribuída neste repositório, não há servidor novo, armazenamento local de informações da conta, telemetria, coleta de senha/token, cópia de cookies ou chamadas a serviços externos. Somente o portal mantém a sessão. Nenhum dado de conta está incluído nos arquivos distribuídos.
 
 A integração depende dos elementos e eventos da página original. Permissões são mantidas; a camada não libera histórico, detalhes ou ações que o portal não disponibiliza. Informações sem valor são apresentadas como “Não informado”, sem inferir aprovação, pendência, data prometida ou conclusão a partir da ausência de dados.
 
